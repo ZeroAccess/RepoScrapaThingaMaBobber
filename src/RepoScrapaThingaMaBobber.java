@@ -18,7 +18,7 @@ public class RepoScrapaThingaMaBobber {
 
     private void retrieveUrl() {
         //Todo Use this method to create a menu to retrieve multiple versions
-        String url = "http://packages.ubuntu.com/xenial/allpackages";
+        String url = "http://archive.ubuntu.com/ubuntu/pool/";
 
         try {
             Document doc = Jsoup.connect(url).userAgent("Chrome").get();
