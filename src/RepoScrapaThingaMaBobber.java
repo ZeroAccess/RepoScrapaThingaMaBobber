@@ -20,7 +20,7 @@ class RepoScrapaThingaMaBobber {
             crawla.crawl(crawla.connect(currentUrl));
             this.pagesToVisit.addAll(crawla.getLinks());
         } while (pagesToVisit.size() > 0);
-//        writeFile(crawla.getFilesToIterate());
+        System.out.println("Search Completed");
     }
 
     private String nextUrl() {
@@ -33,11 +33,12 @@ class RepoScrapaThingaMaBobber {
         return nextUrl;
     }
 
-    private void writeFile(ArrayList<String> list) {
+    public void writeFile(ArrayList<String> list) {
         try {
             FileWriter writer = new FileWriter("MyFile.txt");
             for(int i = 0; i < list.size(); i++) {
                 writer.write(list.get(i));
+                writer.write("\n");
             }
             writer.close();
         } catch (IOException ex) {

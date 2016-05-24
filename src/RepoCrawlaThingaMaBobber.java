@@ -11,7 +11,7 @@ import java.util.List;
 
 class RepoCrawlaThingaMaBobber {
     private final List<String> links = new LinkedList<>();
-    private ArrayList<String> filesToIterate = new ArrayList<>();
+    private static ArrayList<String> filesToIterate = new ArrayList<>();
 
     Document connect(String url) {
         try {
