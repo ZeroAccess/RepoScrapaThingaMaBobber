@@ -1,10 +1,7 @@
 import java.util.Scanner;
 
-/**
- * Created by robertsg on 5/26/2016.
- */
-public class Main {
-    private RepoCrawlaThingaMaBobber crawla = new RepoCrawlaThingaMaBobber();
+class Main {
+    private final RepoCrawlaThingaMaBobber crawla = new RepoCrawlaThingaMaBobber();
     private String url = "";
 
     public static void main(String[] args) {

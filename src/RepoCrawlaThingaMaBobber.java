@@ -1,4 +1,3 @@
-import org.jetbrains.annotations.Nullable;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -6,12 +5,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
-import java.sql.*;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 
 class RepoCrawlaThingaMaBobber {
     private final List<String> links = new LinkedList<>();
@@ -87,9 +82,8 @@ class RepoCrawlaThingaMaBobber {
     void writeFile(String fileName) {
         try {
             Date date = new Date();
-            String dateString = null;
             SimpleDateFormat sdfr = new SimpleDateFormat("MM-dd-yyyy");
-            dateString = sdfr.format(date);
+            String dateString = sdfr.format(date);
 
             if(fileName.equalsIgnoreCase("http://archive.ubuntu.com/ubuntu/pool/main/")) {
                 fileName = "Ubuntu-Main-" + dateString + ".txt";
