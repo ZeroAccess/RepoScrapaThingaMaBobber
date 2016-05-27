@@ -8,7 +8,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-class RepoCrawlaThingaMaBobber {
+class RepoScrapaThingaMaBobber {
     private final List<String> links = new LinkedList<>();
     private static final ArrayList<String> filesToIterate = new ArrayList<>();
     private final Set<String> pagesVisited = new HashSet<>();
@@ -27,7 +27,6 @@ class RepoCrawlaThingaMaBobber {
         } catch (IOException ioe) {
             System.out.println("Unable to connect please try again.");
         }
-        System.out.println("Make sure you're connected to a Repo");
         return null;
     }
 
@@ -53,7 +52,7 @@ class RepoCrawlaThingaMaBobber {
     void search(String url) {
         try {
             do {
-                RepoCrawlaThingaMaBobber crawla = new RepoCrawlaThingaMaBobber();
+                RepoScrapaThingaMaBobber crawla = new RepoScrapaThingaMaBobber();
                 String currentUrl;
                 if (this.pagesToVisit.isEmpty()) {
                     currentUrl = url;
