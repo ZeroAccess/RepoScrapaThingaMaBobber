@@ -1,3 +1,4 @@
+import org.jetbrains.annotations.Nullable;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -5,13 +6,18 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 class RepoCrawlaThingaMaBobber {
     private final List<String> links = new LinkedList<>();
-    private static ArrayList<String> filesToIterate = new ArrayList<>();
+    private static final ArrayList<String> filesToIterate = new ArrayList<>();
+    private final Set<String> pagesVisited = new HashSet<>();
+    private final List<String> pagesToVisit = new LinkedList<>();
 
     Document connect(String url) {
         try {
@@ -26,11 +32,11 @@ class RepoCrawlaThingaMaBobber {
         } catch (IOException ioe) {
             System.out.println("Unable to connect please try again.");
         }
-        System.out.println("Unable to connect please try again.");
+        System.out.println("Make sure you're connected to a Repo");
         return null;
     }
 
-    void crawl(Document doc) {
+    private void crawl(Document doc) {
         try {
             Elements linksOnPage = doc.select("a[href]");
             for (Element link : linksOnPage) {
@@ -45,11 +51,64 @@ class RepoCrawlaThingaMaBobber {
         }
     }
 
-    List<String> getLinks() {
+    private List<String> getLinks() {
         return this.links;
     }
 
-    public ArrayList<String> getFilesToIterate() {
-        return filesToIterate;
+    void search(String url) {
+        try {
+            do {
+                RepoCrawlaThingaMaBobber crawla = new RepoCrawlaThingaMaBobber();
+                String currentUrl;
+                if (this.pagesToVisit.isEmpty()) {
+                    currentUrl = url;
+                    this.pagesVisited.add(url);
+                } else {
+                    currentUrl = this.nextUrl();
+                }
+                crawla.crawl(crawla.connect(currentUrl));
+                this.pagesToVisit.addAll(crawla.getLinks());
+            } while (pagesToVisit.size() > 0);
+        } catch(IllegalArgumentException ex) {
+            System.out.println("Make sure you're connected first!");
+        }
+    }
+
+    private String nextUrl() {
+        String nextUrl;
+        do {
+            nextUrl = this.pagesToVisit.remove(0);
+        }
+        while (this.pagesVisited.contains(nextUrl));
+        this.pagesVisited.add(nextUrl);
+        return nextUrl;
+    }
+
+    void writeFile(String fileName) {
+        try {
+            Date date = new Date();
+            String dateString = null;
+            SimpleDateFormat sdfr = new SimpleDateFormat("MM-dd-yyyy");
+            dateString = sdfr.format(date);
+
+            if(fileName.equalsIgnoreCase("http://archive.ubuntu.com/ubuntu/pool/main/")) {
+                fileName = "Ubuntu-Main-" + dateString + ".txt";
+            } else if(fileName.equalsIgnoreCase("http://archive.debian.org/debian/pool/main/")) {
+                fileName = "Debian-Main-" + dateString + ".txt";
+            } else {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Unknown Repo used. Please type FileName: ");
+                fileName = scanner.next() + dateString + ".txt";
+            }
+            System.out.println(fileName);
+            PrintWriter writer = new PrintWriter(fileName);
+            for (String aList : filesToIterate) {
+                writer.write(aList);
+                writer.write("\n");
+            }
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("Doesn't work");
+        }
     }
 }
